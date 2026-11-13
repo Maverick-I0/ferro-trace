@@ -1,0 +1,80 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+version: 2
+updates:
+  # Rust / Cargo Dependencies (Core Engine & Tree-sitter grammars)
+  - package-ecosystem: "cargo"
+    directory: "/" # Update to "/rust_code_mapper" if your Cargo.toml is inside a subfolder
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      rust-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    labels:
+      - "🤖 dependabot"
+      - "🦀 rust"
+
+  # NPM Dependencies (VS Code Extension TypeScript & Webview UI)
+  - package-ecosystem: "npm"
+    directory: "/" # Update if your package.json is in an "/extension" subfolder
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      # Group all TypeScript, VS Code types, and build tools together
+      typescript-and-tooling:
+        patterns:
+          - "@types/*"
+          - "typescript*"
+          - "eslint*"
+          - "@vscode/*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Group remaining UI/runtime packages (e.g., mermaid, react)
+      npm-runtime-dependencies:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "@types/*"
+          - "typescript*"
+          - "eslint*"
+          - "@vscode/*"
+        update-types:
+          - "minor"
+          - "patch"
+    labels:
+      - "🤖 dependabot"
+      - "📦 npm"
+
+  # GitHub Actions (CI/CD Workflows)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(ci)"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    labels:
+      - "🤖 dependabot"
+      - "⚙️ ci"
